@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
     <!--bean将某个java对象交给spring管理，id是给bean取名，class指定要被管理的类的路径-->
     <bean id="hello" class="com.test.Hello"></bean>
@@ -108,6 +110,26 @@
                 <entry key="用户2" value-ref="user3"></entry>
             </map>
         </property>
+    </bean>
+
+    <bean id="car2" class="com.entity.Car" autowire="byName"></bean>
+
+    <!-- 数据库连接池 ,直接方式配置-->
+<!--    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">-->
+<!--        <property name="driverClassName" value="com.mysql.jdbc.Driver" />-->
+<!--        <property name="url" value="jdbc:mysql://localhost:3306/db2020" />-->
+<!--        <property name="username" value="root" />-->
+<!--        <property name="password" value="root" />-->
+<!--    </bean>-->
+
+    <!-- 引入外部文件-->
+    <context:property-placeholder location="classpath:db.properties"/>
+    <!-- 数据库连接池 ,外部方式配置-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="${jdbc.driver}" />
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
     </bean>
 
 </beans>
