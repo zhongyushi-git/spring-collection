@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <!-- 把SpringMvc类交给springmvc管理 -->
+    <bean id="springmvc" class="com.zxh.controller.SpringMvc"></bean>
+    <!-- 配置适配器 -->
+    <bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter" />
+    <!-- 配置处理器映射器 -->
+    <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="mappings">
+            <props>
+                <!--key表示的是访问的路径-->
+                <prop key="/hello.do">springmvc</prop>
+            </props>
+        </property>
+    </bean>
+</beans>

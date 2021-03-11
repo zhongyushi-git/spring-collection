@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="uTF-8" ?>
+<!-- mybatis核心配置 -->
+<!-- 导入约束的路径 -->
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!-- 配置信息 -->
+<configuration>
+    <!-- 引入并加载外部文件 -->
+    <properties resource="config/db.properties"></properties>
+    <!-- 给类取别名 -->
+    <typeAliases>
+        <!-- 使用包扫描方式取别名 -->
+        <package name="com.zxh.entity"/>
+    </typeAliases>
+    <!-- 环境配置的集合 -->
+    <environments default="mysql">
+        <environment id="mysql">
+            <!-- 事务管理：type指定事务的管理方式，jdbc：交给jdbc管理，MANAGED:被管理 -->
+            <transactionManager type="JDBC"></transactionManager>
+            <!-- 数据库配置：type是否使用连接池，POOLED:使用连接池，UNPOOLED:不使用连接池 -->
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}" />
+                <property name="url" value="${jdbc.url}" />
+                <property name="username" value="${jdbc.username}" />
+                <property name="password" value="${jdbc.password}" />
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!-- 加载映射文件 -->
+    <mappers>
+        <!-- 单独加载映射文件-->
+        <mapper resource="mapper/UserDao.xml"></mapper>
+    </mappers>
+</configuration>

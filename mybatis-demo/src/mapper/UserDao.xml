@@ -1,0 +1,43 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zxh.dao.UserDao">
+    <!--查询所有信息
+        id是这个select的唯一标识
+        resultType是返回类型
+        parameterType是参数类型
+    -->
+    <select id="findAll" resultType="com.zxh.entity.User">
+        select * from user
+    </select>
+
+    <!-- 如果参数是简单数据类型，可以省略 -->
+    <select id="findById" parameterType="int" resultType="User">
+        select * from user where id=#{id}
+    </select>
+
+    <select id="findByNmAndPwd" parameterType="User" resultType="User">
+        select * from user where username=#{username} and password=#{password}
+    </select>
+
+    <insert id="addUser" parameterType="User">
+        insert  into user values(10,#{username},#{password})
+    </insert>
+
+    <update id="updateUser" parameterType="User">
+        update user  set username=#{username},password=#{password} where id=#{id}
+    </update>
+
+    <delete id="deleteUser">
+       delete from user where id=#{value}
+    </delete>
+
+    <!-- 模糊查询：一个条件,使用${},并且括号里面只能写value -->
+    <select id="findByLikeOne" resultType="User">
+        select * from user where username like '%${value}%'
+    </select>
+
+    <!-- 模糊查询：多个条件,使用${},并且括号里面要与对象的属性相同 -->
+    <select id="findByLikeMore" parameterType="User" resultType="User">
+        select * from user where username like '%${username}%' and password like '%${password}%'
+    </select>
+</mapper>
