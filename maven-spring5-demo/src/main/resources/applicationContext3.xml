@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--交给spring管理-->
+<!--    <bean class="com.controller.StuDao" id="StuDao"></bean>-->
+<!--    <bean class="com.controller.StuHelper" id="StuHelper"></bean>-->
+<!--    &lt;!&ndash;aop配置&ndash;&gt;-->
+<!--    <aop:config>-->
+<!--        &lt;!&ndash;配置切点-->
+<!--        expression="execution(* com.controller.StuDao.add(..))"-->
+<!--        切点表达式，*表示返回值类型，..表示任意参数&ndash;&gt;-->
+<!--        <aop:pointcut id="addPoint" expression="execution(* com.controller.StuDao.add(..))"/>-->
+<!--        &lt;!&ndash;当调用add方法时通知hepler&ndash;&gt;-->
+<!--        <aop:advisor advice-ref="StuHelper" pointcut-ref="addPoint"></aop:advisor>-->
+<!--    </aop:config>-->
+
+    <!--交给spring管理-->
+    <bean class="com.controller.StuDao" id="StuDao"></bean>
+    <bean class="com.controller.Helper" id="helper"></bean>
+    <!--aop配置-->
+    <aop:config>
+        <aop:aspect ref="helper">
+            <aop:pointcut id="addCut" expression="execution(* com.controller.StuDao.add(..))"/>
+            <aop:before method="before" pointcut-ref="addCut"></aop:before>
+            <aop:after method="after" pointcut-ref="addCut"></aop:after>
+        </aop:aspect>
+    </aop:config>
+
+    <!--配置aop代理-->
+    <aop:aspectj-autoproxy/>
+    <!--开启注解扫描-->
+    <context:component-scan base-package="com.controller" />
+
+
+</beans>

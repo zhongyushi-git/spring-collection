@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--bean将某个java对象交给spring管理，id是给bean取名，class指定要被管理的类的路径-->
+    <bean id="hello" class="com.test.Hello"></bean>
+
+<!--    <bean id="user" class="com.entity.User">-->
+<!--        &lt;!&ndash;通过属性注入值，必须提供get和set方法&ndash;&gt;-->
+<!--        <property name="name" value="元慧"></property>-->
+<!--        <property name="age" value="23"></property>-->
+<!--    </bean>-->
+
+    <bean id="user" class="com.entity.User">
+        <!--通过属性注入值，必须提供get和set方法-->
+        <property name="name" >
+            <value><![CDATA[<你好啊>]]></value>
+        </property>
+        <property name="age" value="23"></property>
+    </bean>
+
+    <bean id="user2" class="com.entity.User2">
+        <!--构造注入内容，必须提供有参构造-->
+        <constructor-arg name="name" value="123"></constructor-arg>
+        <constructor-arg name="age" value="20"></constructor-arg>
+    </bean>
+
+    <bean id="user3" class="com.entity.User">
+        <property name="name" value="郭慧"></property>
+        <property name="age" value="20"></property>
+    </bean>
+
+<!--    <bean id="car" class="com.entity.Car">-->
+<!--        <property name="brand" value="迈巴赫"></property>-->
+<!--        <property name="price" value="8000000"></property>-->
+<!--        <property name="user" ref="user"></property>-->
+<!--    </bean>-->
+
+    <bean id="car" class="com.entity.Car">
+        <property name="brand" value="迈巴赫"></property>
+        <property name="price" value="8000000"></property>
+        <property name="user">
+            <bean class="com.entity.User">
+                <property name="name" value="郭慧"></property>
+                <property name="age" value="20"></property>
+            </bean>
+        </property>
+    </bean>
+
+<!--    <bean id="coll" class="com.entity.Coll">-->
+<!--        <property name="listStr">-->
+<!--            <list>-->
+<!--                <value>张三</value>-->
+<!--                <value>李四</value>-->
+<!--                <value>王五</value>-->
+<!--                <value>张三</value>-->
+<!--            </list>-->
+<!--        </property>-->
+<!--    </bean>-->
+
+
+<!--    <bean id="coll2" class="com.entity.Coll2">-->
+<!--        <property name="userList">-->
+<!--            <list>-->
+<!--                <ref bean="user"></ref>-->
+<!--                <ref bean="user3"></ref>-->
+<!--            </list>-->
+<!--        </property>-->
+<!--    </bean>-->
+
+<!--    <bean id="coll" class="com.entity.Coll">-->
+<!--        <property name="setStr">-->
+<!--            <set>-->
+<!--                <value>张三</value>-->
+<!--                <value>李四</value>-->
+<!--                <value>王五</value>-->
+<!--                <value>张三</value>-->
+<!--            </set>-->
+<!--        </property>-->
+<!--    </bean>-->
+
+
+<!--    <bean id="coll2" class="com.entity.Coll2">-->
+<!--        <property name="userSet">-->
+<!--            <set>-->
+<!--                <ref bean="user"></ref>-->
+<!--                <ref bean="user3"></ref>-->
+<!--            </set>-->
+<!--        </property>-->
+<!--    </bean>-->
+
+    <bean id="coll" class="com.entity.Coll">
+        <property name="mapStr">
+            <map>
+                <entry key="name" value="张三"></entry>
+                <entry key="sex" value="女"></entry>
+                <entry key="age" value="20"></entry>
+            </map>
+        </property>
+    </bean>
+
+
+    <bean id="coll2" class="com.entity.Coll2">
+        <property name="userMap">
+            <map>
+                <entry key="用户1" value-ref="user"></entry>
+                <entry key="用户2" value-ref="user3"></entry>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="car2" class="com.entity.Car" autowire="byName"></bean>
+
+    <!-- 数据库连接池 ,直接方式配置-->
+<!--    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">-->
+<!--        <property name="driverClassName" value="com.mysql.jdbc.Driver" />-->
+<!--        <property name="url" value="jdbc:mysql://localhost:3306/db2020" />-->
+<!--        <property name="username" value="root" />-->
+<!--        <property name="password" value="root" />-->
+<!--    </bean>-->
+
+    <!-- 引入外部文件-->
+    <context:property-placeholder location="classpath:db.properties"/>
+    <!-- 数据库连接池 ,外部方式配置-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="${jdbc.driver}" />
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+    </bean>
+
+</beans>
