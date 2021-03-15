@@ -40,4 +40,103 @@
     <select id="findByLikeMore" parameterType="User" resultType="User">
         select * from user where username like '%${username}%' and password like '%${password}%'
     </select>
+
+    <insert id="addPvo" parameterType="PVo">
+       insert into  user values(15,#{person.username},#{people.password})
+    </insert>
+
+    <!--    &lt;!&ndash; 复杂查询：查询用户的id,用户名以及所对应的成绩的id和具体成绩 &ndash;&gt;-->
+    <!--    &lt;!&ndash;定义表数据与组合类的映射关系，id是唯一标识，type是类型&ndash;&gt;-->
+    <!--    <resultMap id="userAndScore" type="User">-->
+    <!--        &lt;!&ndash;id是主键映射，result是非主键映射，column是数据库中的列名，properties是对象的属性名&ndash;&gt;-->
+    <!--        &lt;!&ndash;如果多个表中的属性名一样，要注意区分，如这里的id&ndash;&gt;-->
+    <!--        <id column="uid" property="id"></id>-->
+    <!--        <result column="username" property="username"></result>-->
+    <!--        <result column="password" property="password"></result>-->
+    <!--        &lt;!&ndash;association对属性是对象的变量的深入映射，适用于一对一的关系&ndash;&gt;-->
+    <!--        <association property="score" javaType="Score">-->
+    <!--            <id column="sid" property="id"></id>-->
+    <!--            <result column="grade" property="grade"></result>-->
+    <!--            <result column="u_id" property="u_id"></result>-->
+    <!--        </association>-->
+    <!--    </resultMap>-->
+    <!--    &lt;!&ndash;这里的返回类型必须是map集合&ndash;&gt;-->
+    <!--    <select id="findUserAndScore" resultMap="userAndScore">-->
+    <!--        select user.id uid, username,score.id sid,grade from user,score where user.id=score.u_id-->
+    <!--    </select>-->
+
+    <!--    <resultMap id="userAndScore" type="User">-->
+    <!--        <id column="uid" property="id"></id>-->
+    <!--        <result column="username" property="username"></result>-->
+    <!--        <result column="password" property="password"></result>-->
+    <!--        &lt;!&ndash;collection对属性是对象的变量的深入映射，适用于一对多的关系&ndash;&gt;-->
+    <!--        &lt;!&ndash;javaType指属性是什么类型，ofType指集合中装的什么类型&ndash;&gt;-->
+    <!--        <collection property="scores" javaType="java.util.List" ofType="Score">-->
+    <!--            <id column="sid" property="id"></id>-->
+    <!--            <result column="grade" property="grade"></result>-->
+    <!--            <result column="u_id" property="u_id"></result>-->
+    <!--        </collection>-->
+    <!--    </resultMap>-->
+    <!--这里的返回类型必须是map集合-->
+    <select id="findUserAndScore" resultMap="userAndScore">
+        select user.id uid, username,score.id sid,grade from user,score where user.id=score.u_id
+    </select>
+
+    <select id="findByMap" resultType="User">
+        select * from user where 1=1
+        <if test="id!=null">
+            and id=#{id}
+        </if>
+        <if test="username!=null and username!=''">
+            and username like '%${username}%'
+        </if>
+    </select>
+
+    <select id="findByMap2" resultType="User">
+        select * from user
+        <where>
+            <if test="id!=null">
+                and id=#{id}
+            </if>
+            <if test="username!=null and username!=''">
+                and username like '%${username}%'
+            </if>
+        </where>
+    </select>
+
+    <select id="findByIn" parameterType="java.util.List" resultType="User">
+        select * from user
+        <!--如果传入参数是list类型，必须使用list获取,并且使用and-->
+        <if test="list.size()>0 and list!=null">
+            where id in
+            <!--collection要遍历的集合，open开始的符号，close结束的符号，separator分隔符-->
+            <!--index是索引，item是每一条内容，这里是list.get(i)-->
+            <foreach collection="list" open="(" separator="," close=")" index="i" item="item">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="findScore" resultType="Score">
+        select id sid,grade from score where u_id =#{value}
+    </select>
+    <resultMap id="userAndScore" type="User">
+        <id column="uid" property="id"></id>
+        <result column="username" property="username"></result>
+        <result column="password" property="password"></result>
+        <!--collection对属性是对象的变量的深入映射，适用于一对多的关系-->
+        <!--javaType指属性是什么类型，ofType指集合中装的什么类型-->
+        <collection property="scores" ofType="Score" select="com.zxh.dao.UserDao.findScore" column="uid">
+            <id column="sid" property="id"></id>
+            <result column="grade" property="grade"></result>
+            <result column="u_id" property="u_id"></result>
+        </collection>
+    </resultMap>
+    <select id="findUserAndScore2" resultMap="userAndScore" parameterType="User">
+        select user.id uid, username,score.id sid,grade from user,score where user.id=score.u_id
+    </select>
+
+    <select id="findByNmAndPwd2" resultType="User">
+        select * from user where username=#{username} and password=#{password}
+    </select>
 </mapper>

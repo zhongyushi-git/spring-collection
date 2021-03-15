@@ -1,6 +1,9 @@
 package com.zxh.test;
 
 import com.zxh.dao.UserDao;
+import com.zxh.entity.PVo;
+import com.zxh.entity.People;
+import com.zxh.entity.Person;
 import com.zxh.entity.User;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -119,4 +122,29 @@ public class MyTest {
         List<User> list = userMapper.findByLikeMore(user);
         System.out.println(list);
     }
+
+    @Test
+    public void addPvo() {
+        SqlSession session = build.openSession();
+        UserDao userMapper = session.getMapper(UserDao.class);
+        PVo pVo = new PVo();
+        People people = new People();
+        Person person = new Person();
+        people.setPassword("admin");
+        person.setUsername("zhangSan");
+        pVo.setPeople(people);
+        pVo.setPerson(person);
+        userMapper.addPvo(pVo);
+        session.commit();//提交事务
+    }
+
+    @Test
+    public void findUserAndScore(){
+        SqlSession session = build.openSession();
+        UserDao userMapper = session.getMapper(UserDao.class);
+        List<User> list=userMapper.findUserAndScore();
+        System.out.println(list);
+    }
+
+
 }
