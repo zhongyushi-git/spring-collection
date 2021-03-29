@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户登录</title>
+    <link rel="stylesheet " href="static/bootstrap/css/bootstrap.min.css">
+    <script src="static/jquery/jquery.min.js"></script>
+    <script src="static/bootstrap/js/bootstrap.min.js"></script>
+    <style>
+        .content {
+            position:absolute;
+            left:0;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            margin: auto;
+            width: 500px;
+            height: 300px;
+        }
+        #login{
+            width: 100%;
+        }
+    </style>
+</head>
+    <body>
+        <div class="content">
+            <h2>用户登录</h2>
+            <form>
+                <div class="form-group">
+                    <label>用户名</label>
+                    <input type="input" class="form-control" id="id" placeholder="请输入用户名">
+                </div>
+                <div class="form-group">
+                    <label>密码</label>
+                    <input type="password" class="form-control" id="password" placeholder="请输入密码">
+                </div>
+            </form>
+            <button class="btn btn-primary" id="login">登录</button>
+        </div>
+
+        <script src="view/js/base.js"></script>
+        <script src="view/js/login.js"></script>
+    </body>
+</html>
